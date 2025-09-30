@@ -22,6 +22,7 @@ jobs:
           pip install -r requirements.txt
           pip install pyinstaller
       - name: Run pyinstaller
+        shell: bash
         run: |
           pyinstaller -F main.py \
           -n simple-blendshape-keybinder \
