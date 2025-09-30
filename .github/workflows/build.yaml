@@ -14,14 +14,16 @@ jobs:
     
     steps:
       - uses: actions/checkout@v5
-      - name: Create Executable
-        uses: sayyid5416/pyinstaller@v1
+      - uses: actions/setup-python@v6 
         with:
-          python_ver: 3.13
-          requirements: requirements.txt
-          spec: ./main.py
-          exe_path: ./dist/simple-blendshape-keybinder
-          options: --onefile, --name "simple-blendshape-keybinder",
+          python-version: 'pypy3.13'
+      - name: Install requirements & pyinstaller
+        run: |
+          pip install -r requirements.txt
+          pip install pyinstaller
+      - name: Run pyinstaller
+        run: |
+          pyinstaller -F main.py -n simple-blendshape-keybinder --hidden-import=pynput.keyboard._xorg --distpath=./dist/simple-blendshape-keybinder
       - name: Copy config.toml
         shell: bash
         run: cp config.example.toml ./dist/simple-blendshape-keybinder/config.toml
