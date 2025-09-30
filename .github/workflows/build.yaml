@@ -26,7 +26,7 @@ jobs:
           pyinstaller -F main.py \
           -n simple-blendshape-keybinder \
           --hidden-import=pynput.keyboard._xorg \
-          --hidden-import=pynput.mouse._xorg
+          --hidden-import=pynput.mouse._xorg \
           --distpath=./dist/simple-blendshape-keybinder
       - name: Copy config.toml
         shell: bash
