@@ -19,8 +19,9 @@ jobs:
         with:
           python_ver: 3.13
           requirements: requirements.txt
+          spec: ./main.py
           exe_path: ./dist/simple-blendshape-keybinder
-          options: --onefile main.py, --name "simple-blendshape-keybinder",
+          options: --onefile, --name "simple-blendshape-keybinder",
       - name: Copy config.toml
         shell: bash
         run: cp config.example.toml ./dist/simple-blendshape-keybinder/config.toml
