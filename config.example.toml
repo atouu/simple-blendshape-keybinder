@@ -1,0 +1,6 @@
+vmc_ip = "127.0.0.1"
+vmc_port = 39539
+
+[toggles]
+"<ctrl>+<alt>+m" = "meow_toggle"
+# "<keystroke>" = "blendshape_name"

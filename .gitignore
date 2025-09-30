@@ -1,0 +1,6 @@
+config.toml
+*.spec
+build
+dist
+.venv
+__pycache__
