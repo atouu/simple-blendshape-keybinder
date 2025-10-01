@@ -1,5 +1,15 @@
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Version"
+        default: "0.0.0"
+        required: true
+        type: string
+      release-draft:
+        type: boolean
+        default: false
+        description: "Release Draft"
 
 jobs:
   build:
@@ -14,13 +24,21 @@ jobs:
     
     steps:
       - uses: actions/checkout@v5
-      - name: Create Executable
-        uses: sayyid5416/pyinstaller@v1
+      - uses: actions/setup-python@v6 
         with:
-          python_ver: 3.13
-          requirements: requirements.txt
-          exe_path: ./dist/simple-blendshape-keybinder
-          options: --onefile main.py, --name "simple-blendshape-keybinder",
+          python-version: '3.13'
+      - name: Install requirements & pyinstaller
+        run: |
+          pip install -r requirements.txt
+          pip install pyinstaller
+      - name: Run pyinstaller
+        shell: bash
+        run: |
+          pyinstaller -F main.py \
+          -n simple-blendshape-keybinder \
+          --hidden-import=pynput.keyboard._xorg \
+          --hidden-import=pynput.mouse._xorg \
+          --distpath=./dist/simple-blendshape-keybinder
       - name: Copy config.toml
         shell: bash
         run: cp config.example.toml ./dist/simple-blendshape-keybinder/config.toml
@@ -39,10 +57,18 @@ jobs:
         with:
           name: simple-blendshape-keybinder-${{ matrix.os.name }}.zip
           path: simple-blendshape-keybinder-${{ matrix.os.name }}.zip
-        if: ${{ matrix.os.runs-on == 'windows-latest' }}
+        if: ${{ !inputs.release-draft && matrix.os.runs-on == 'windows-latest' }}
 
       - uses: actions/upload-artifact@v4
         with:
           name: simple-blendshape-keybinder-${{ matrix.os.name }}.tar.gz
           path: simple-blendshape-keybinder-${{ matrix.os.name }}.tar.gz
-        if: ${{ matrix.os.runs-on == 'ubuntu-latest' }}
+        if: ${{ !inputs.release-draft && matrix.os.runs-on == 'ubuntu-latest' }}
+
+      - name: Release Draft
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ inputs.version }}
+          draft: true
+          files: simple-blendshape-keybinder-*
+        if: ${{ inputs.release-draft }}
