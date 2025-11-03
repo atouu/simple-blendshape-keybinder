@@ -41,7 +41,7 @@ jobs:
           --distpath=./dist/simple-blendshape-keybinder
       - name: Copy config.toml
         shell: bash
-        run: cp config.example.toml ./dist/simple-blendshape-keybinder/config.toml
+        run: cp config.template.toml ./dist/simple-blendshape-keybinder/config.template.toml
       - name: Windows Zip
         run: |
           cd ./dist

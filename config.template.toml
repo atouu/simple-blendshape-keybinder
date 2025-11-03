@@ -1,0 +1,11 @@
+vmc_ip = "127.0.0.1"
+vmc_port = 39539
+initialize = false # Run each keystrokes on start
+
+[mouse]
+enabled = false
+max_xy = [1920, 1080] # Monitor resolution
+
+[keystrokes]
+# "<keystroke>" = ["<blendshape_name>", <initial_value>]
+"<ctrl>+<alt>+m" = [ "meow_toggle", 0 ]
