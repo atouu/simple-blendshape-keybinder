@@ -64,11 +64,13 @@ def main():
     for key in config["keystrokes"]:
         blendshape = config["keystrokes"][key][0]
         blend_states[blendshape] = config["keystrokes"][key][1]
+        
+        if config["initialize"]:
+            send_blend(client, blendshape, blend_states[blendshape])
+            apply_blends(client)
+            print(f"{blendshape} = {blend_states[blendshape]}")
+            
         toggles_lambda[key] = partial(toggle_blend, client,  blendshape)
-    
-    if config["initialize"]:
-        for value in toggles_lambda.values():
-            value()
             
     if config["mouse"]["enabled"]:
         mouse.Listener(on_move=partial(on_mouse_move, client, config["mouse"]["max_xy"])).start()
